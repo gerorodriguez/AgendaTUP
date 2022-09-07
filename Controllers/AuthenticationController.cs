@@ -1,6 +1,5 @@
 ﻿using AgendaApi.Entities;
 using AgendaApi.Models;
-using AgendaApi.Services.Interfaces;
 using AgendaApi.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
@@ -15,10 +14,9 @@ namespace AgendaApi.Controllers
     public class AuthenticationController : ControllerBase
     {
         private readonly IConfiguration _config;
-        private readonly ICustomAuthenticationService _customAuthenticationService;
         private readonly IUserRepository _userRepository;
 
-        public AuthenticationController(IConfiguration config, ICustomAuthenticationService userRepository)
+        public AuthenticationController(IConfiguration config, IUserRepository userRepository)
         {
             _config = config; //Hacemos la inyección para poder usar el appsettings.json
             this._userRepository = userRepository;
@@ -29,7 +27,7 @@ namespace AgendaApi.Controllers
         public ActionResult<string> Autenticar(AuthenticationRequestBody authenticationRequestBody) //Enviamos como parámetro la clase que creamos arriba
         {
             //Paso 1: Validamos las credenciales
-            var user = _customAuthenticationService.ValidateUser(authenticationRequestBody); //Lo primero que hacemos es llamar a una función que valide los parámetros que enviamos.
+            var user = _userRepository.ValidateUser(authenticationRequestBody); //Lo primero que hacemos es llamar a una función que valide los parámetros que enviamos.
 
             if (user is null) //Si el la función de arriba no devuelve nada es porque los datos son incorrectos, por lo que devolvemos un Unauthorized (un status code 401).
                 return Unauthorized();
