@@ -7,8 +7,8 @@ namespace AgendaApi.Repository.Implementations
 {
     public class UserRespository : IUserRepository
     {
-        private Context _context;
-        public UserRespository(Context context)
+        private Data.AppContext _context;
+        public UserRespository(Data.AppContext context)
         {
             _context = context;
         }
