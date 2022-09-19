@@ -3,12 +3,12 @@ using Microsoft.EntityFrameworkCore;
 
 namespace AgendaApi.Data
 {
-    public class AppContext : DbContext
+    public class AgendaContext : DbContext
     {
         public DbSet<User> Users { get; set; }
         public DbSet<Contact> Contacts { get; set; }
 
-        public AppContext(DbContextOptions<AppContext> options) : base(options) //Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
+        public AgendaContext(DbContextOptions<AgendaContext> options) : base(options) //Acá estamos llamando al constructor de DbContext que es el que acepta las opciones
         {
 
         }
@@ -41,7 +41,7 @@ namespace AgendaApi.Data
                 CelularNumber = 341457896,
                 Description = "Plomero",
                 TelephoneNumber = null,
-                User = karen,
+                UserId = karen.Id,
             };
 
             Contact pepeC = new Contact()
@@ -51,7 +51,7 @@ namespace AgendaApi.Data
                 CelularNumber = 34156978,
                 Description = "Papa",
                 TelephoneNumber = 422568,
-                User = luis,
+                UserId = luis.Id,
             };
 
             Contact mariaC = new Contact()
@@ -61,7 +61,7 @@ namespace AgendaApi.Data
                 CelularNumber = 011425789,
                 Description = "Jefa",
                 TelephoneNumber = null,
-                User = karen,
+                UserId = karen.Id,
             };
 
             modelBuilder.Entity<User>().HasData(

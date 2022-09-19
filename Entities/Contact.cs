@@ -12,6 +12,8 @@ namespace AgendaApi.Entities
         public int? CelularNumber { get; set; }
         public int? TelephoneNumber { get; set; }
         public string Description = String.Empty;
-        public User? User;
-}
+        [ForeignKey("UserId")]
+        public User User { get; set; }
+        public int UserId { get; set; }
+    }
 }

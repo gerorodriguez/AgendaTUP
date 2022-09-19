@@ -1,7 +1,7 @@
 ﻿using AgendaApi.Entities;
 using AgendaApi.Models;
 
-namespace AgendaApi.Repository.Interfaces
+namespace AgendaApi.Data.Repository.Interfaces
 {
     public interface IUserRepository
     {

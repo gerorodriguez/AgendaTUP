@@ -1,60 +1,54 @@
 ﻿using AgendaApi.Entities;
 using AgendaApi.Models;
+using AgendaApi.Data.Repository.Implementations;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
+using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaApi.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
+    [Authorize]
     public class ContactController : ControllerBase
     {
-        public static List<Contact>FakeContacts = new List<Contact>()
+        private ContactRepository _contactRepository { get; set; }
+
+        public ContactController(ContactRepository contactRepository)
         {
-            new Contact()
-            {
-                Id = 1,
-                CelularNumber = 1111111111,
-                Description = "Celu personal",
-                Name =  "Profe Pablo"
-            },
-            new Contact()
-            {
-                Id=2,
-                TelephoneNumber = 456789,
-                Description = "Telefono de emergencias",
-                Name ="Hospital del pueblo"
-            },
-        };
+            _contactRepository = contactRepository;
+        }
 
         [HttpGet]
         public ActionResult GetAll()
         {
 
-            return Ok(FakeContacts);
+            return Ok(_contactRepository.GetAll());
         }
 
         [HttpGet]
-        [Route("GetOneById/{Id}")]
+        [Route("{Id}")]
         public ActionResult GetOne(int Id)
         {
-            return Ok(FakeContacts.Where(x => x.Id == Id));
+            return Ok(_contactRepository.GetAll().Where(x => x.Id == Id));
         }
 
 
         [HttpPost]
         public ActionResult CreateContact(CreateContactDto createContactDto)
         {
-            Contact contact = new Contact()
+            try
             {
-                CelularNumber = createContactDto.CelularNumber,
-                Description = createContactDto.Description,
-                Name = createContactDto.Name,
-                TelephoneNumber = createContactDto.TelephoneNumber,
-            };
-            FakeContacts.Add(contact);
-            return Created("Created",contact);
+                _contactRepository.Create(createContactDto);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+            return Created("Created", createContactDto);
         }
+
+
     }
 }

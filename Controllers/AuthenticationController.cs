@@ -1,6 +1,6 @@
-﻿using AgendaApi.Entities;
+﻿using AgendaApi.Data.Repository.Interfaces;
+using AgendaApi.Entities;
 using AgendaApi.Models;
-using AgendaApi.Repository.Interfaces;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
