@@ -21,7 +21,7 @@ namespace AgendaApi.Controllers
         }
 
         [HttpGet]
-        public ActionResult GetAll()
+        public IActionResult GetAll()
         {
 
             return Ok(_contactRepository.GetAll());
@@ -29,14 +29,14 @@ namespace AgendaApi.Controllers
 
         [HttpGet]
         [Route("{Id}")]
-        public ActionResult GetOne(int Id)
+        public IActionResult GetOne(int Id)
         {
             return Ok(_contactRepository.GetAll().Where(x => x.Id == Id));
         }
 
 
         [HttpPost]
-        public ActionResult CreateContact(CreateContactDto createContactDto)
+        public IActionResult CreateContact(CreateAndUpdateContact createContactDto)
         {
             try
             {
@@ -49,6 +49,32 @@ namespace AgendaApi.Controllers
             return Created("Created", createContactDto);
         }
 
+        [HttpPut]
+        public IActionResult UpdateContact(CreateAndUpdateContact dto)
+        {
+            try
+            {
+                _contactRepository.Update(dto);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return NoContent();
+        }
 
+        [HttpDelete]
+        public IActionResult DeleteContactById(int id)
+        {
+            try
+            {
+                _contactRepository.Delete(id);
+            }
+            catch(Exception ex)
+            {
+                return BadRequest(ex);
+            }
+            return Ok();
+        }
     }
 }

@@ -20,9 +20,18 @@ namespace AgendaApi.Data.Repository.Implementations
             return _context.Contacts.ToList();
         }
 
-        public void Create(CreateContactDto dto)
+        public void Create(CreateAndUpdateContact dto)
         {
             _context.Contacts.Add(_mapper.Map<Contact>(dto));
+        }
+
+        public void Update(CreateAndUpdateContact dto)
+        {
+            _context.Contacts.Update(_mapper.Map<Contact>(dto));
+        }
+        public void Delete(int id)
+        {
+            _context.Contacts.Remove(_context.Contacts.Single(c => c.Id == id));
         }
     }
 }

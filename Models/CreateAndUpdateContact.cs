@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace AgendaApi.Models
 {
-    public class CreateContactDto
+    public class CreateAndUpdateContact
     {
         [Required]
         public string Name { get; set; }

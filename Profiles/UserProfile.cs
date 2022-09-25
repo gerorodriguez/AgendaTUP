@@ -1,4 +1,5 @@
 ﻿using AgendaApi.Entities;
+using AgendaApi.Models;
 using AutoMapper;
 
 namespace AgendaApi.Profiles
@@ -7,6 +8,7 @@ namespace AgendaApi.Profiles
     {
         public UserProfile()
         {
+            CreateMap<User, CreateAndUpdateUserDto>();
         }
 
     }

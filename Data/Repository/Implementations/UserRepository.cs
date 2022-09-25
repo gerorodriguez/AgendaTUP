@@ -2,19 +2,22 @@
 using AgendaApi.Models;
 using AgendaApi.Data;
 using AgendaApi.Data.Repository.Interfaces;
+using AutoMapper;
 
 namespace AgendaApi.Data.Repository.Implementations
 {
     public class UserRepository : IUserRepository
     {
         private AgendaContext _context;
-        public UserRepository(AgendaContext context)
+        private readonly IMapper _mapper;
+        public UserRepository(AgendaContext context, IMapper mapper)
         {
             _context = context;
+            _mapper = mapper; 
         }
-        public User? GetUserById(int userId)
+        public User? GetById(int userId)
         {
-            throw new NotImplementedException();
+            return _context.Users.SingleOrDefault(u => u.Id == userId);
         }
 
         public User? ValidateUser(AuthenticationRequestBody authRequestBody)
@@ -25,6 +28,21 @@ namespace AgendaApi.Data.Repository.Implementations
         public List<User> GetAll()
         {
             return _context.Users.ToList();
+        }
+
+        public void Create(CreateAndUpdateUserDto dto)
+        {
+            _context.Users.Add(_mapper.Map<User>(dto));
+        }
+
+        public void Update(CreateAndUpdateUserDto dto)
+        {
+            _context.Users.Update(_mapper.Map<User>(dto));
+        }
+
+        public void Delete(int id)
+        {
+            _context.Users.Remove(_context.Users.Single(u => u.Id == id));
         }
     }
 }
