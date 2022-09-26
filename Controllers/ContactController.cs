@@ -1,10 +1,11 @@
-﻿using AgendaApi.Entities;
+﻿using AgendaApi.Data.Repository.Implementations;
+using AgendaApi.Data.Repository.Interfaces;
+using AgendaApi.Entities;
 using AgendaApi.Models;
-using AgendaApi.Data.Repository.Implementations;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using System.Text.Json;
-using Microsoft.AspNetCore.Authorization;
 
 namespace AgendaApi.Controllers
 {
@@ -13,9 +14,9 @@ namespace AgendaApi.Controllers
     [Authorize]
     public class ContactController : ControllerBase
     {
-        private ContactRepository _contactRepository { get; set; }
+        private readonly IContactRepository _contactRepository;
 
-        public ContactController(ContactRepository contactRepository)
+        public ContactController(IContactRepository contactRepository)
         {
             _contactRepository = contactRepository;
         }
@@ -56,7 +57,7 @@ namespace AgendaApi.Controllers
             {
                 _contactRepository.Update(dto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -70,7 +71,7 @@ namespace AgendaApi.Controllers
             {
                 _contactRepository.Delete(id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }

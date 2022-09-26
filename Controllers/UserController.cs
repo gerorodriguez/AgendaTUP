@@ -1,4 +1,5 @@
 ﻿using AgendaApi.Data.Repository.Implementations;
+using AgendaApi.Data.Repository.Interfaces;
 using AgendaApi.Entities;
 using AgendaApi.Models;
 using Microsoft.AspNetCore.Authorization;
@@ -11,8 +12,8 @@ namespace AgendaApi.Controllers
     [Authorize]
     public class UserController : Controller
     {
-        private UserRepository _userRepository { get; set; }
-        public UserController(UserRepository userRepository)
+        private readonly IUserRepository _userRepository;
+        public UserController(IUserRepository userRepository)
         {
             _userRepository = userRepository;
         }
@@ -52,7 +53,7 @@ namespace AgendaApi.Controllers
             {
                 _userRepository.Create(dto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -66,7 +67,7 @@ namespace AgendaApi.Controllers
             {
                 _userRepository.Update(dto);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
@@ -81,7 +82,7 @@ namespace AgendaApi.Controllers
             {
                 _userRepository.Delete(Id);
             }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 return BadRequest(ex);
             }
