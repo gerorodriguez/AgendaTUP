@@ -10,6 +10,7 @@ using AgendaApi.Data.Repository.Interfaces;
 using AutoMapper;
 using AgendaApi.Profiles;
 using AgendaApi.Data.Repository.Implementations;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -71,6 +72,24 @@ builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
 builder.Services.AddScoped<IUserRepository,UserRepository>();
 builder.Services.AddScoped<IContactRepository,ContactRepository>();
 #endregion
+
+builder.Services
+    .AddHttpContextAccessor()
+    .AddAuthorization()
+    .AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
 
 var app = builder.Build();
 
